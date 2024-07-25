@@ -1,36 +1,35 @@
 /* eslint-disable @next/next/no-img-element */
 import { Popover, Transition } from '@headlessui/react';
-import { Bars4Icon as MenuIcon } from '@heroicons/react/24/outline';
-import { XMarkIcon as XIcon } from '@heroicons/react/24/outline';
+import { Bars4Icon as MenuIcon, XMarkIcon as XIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { FaRegGem as FeatureRequestIcon } from 'react-icons/fa';
-import { MdOutlineContactSupport as SupportIcon } from 'react-icons/md';
-import { MdOutlineFeedback as FeedbackIcon } from 'react-icons/md';
+import { MdOutlineContactSupport as SupportIcon, MdOutlineFeedback as FeedbackIcon } from 'react-icons/md';
 import ErrorMessage from '@/components/ErrorMessage';
 import config from '../config/index.json';
+
 export const HeaderPopover = () => {
   const { company } = config;
   const { logo } = company;
-  const [firstName, setFirstName] = useState("");
-  if (typeof window !== 'undefined' && window.Telegram) {
-    const userId = window
-.Telegram.WebApp.initData.user.id;
-setFirstName(window.Telegram.WebApp.initData.user.first_name);
-    console.log('first name', firstName);
-    // ... access other user data
-  }
+  const [firstName, setFirstName] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.Telegram) {
+      const { user } = window.Telegram.WebApp.initData;
+      setFirstName(user.first_name);
+      console.log('first name', user.first_name);
+    }
+  }, []);
+
   return (
     <Popover className='mx-2 self-center sm:mx-0'>
       <nav className='relative flex items-center justify-between gap-8 sm:h-10 lg:justify-start'>
         <div className='flex flex-shrink-0 flex-grow items-center lg:flex-grow-0'>
           <div className='flex w-full items-center justify-between md:w-auto'>
-            <div className='flex items-center '>
-              <Popover.Button className='inline-flex items-center justify-center rounded-md bg-background p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary'>
-                <span className='sr-only'>Open main menu</span>
-                <MenuIcon className='h-6 w-6' aria-hidden='true' />
-              </Popover.Button>
-            </div>
+            <Popover.Button className='inline-flex items-center justify-center rounded-md bg-background p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary'>
+              <span className='sr-only'>Open main menu</span>
+              <MenuIcon className='h-6 w-6' aria-hidden='true' />
+            </Popover.Button>
           </div>
         </div>
       </nav>
@@ -49,15 +48,11 @@ setFirstName(window.Telegram.WebApp.initData.user.first_name);
         >
           <div className='overflow-hidden rounded-lg bg-background shadow-md ring-1 ring-black ring-opacity-5'>
             <div className='flex items-center justify-between px-5 pt-4'>
-              <div>
-                <img className='h-8 w-auto' src={logo} alt='' />
-              </div>
-              <div className='-mr-2'>
-                <Popover.Button className='inline-flex items-center justify-center rounded-md bg-background p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary'>
-                  <span className='sr-only'>Close main menu</span>
-                  <XIcon className='h-6 w-6' aria-hidden='true' />
-                </Popover.Button>
-              </div>
+              <img className='h-8 w-auto' src={logo} alt='Company Logo' />
+              <Popover.Button className='inline-flex items-center justify-center rounded-md bg-background p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-secondary'>
+                <span className='sr-only'>Close main menu</span>
+                <XIcon className='h-6 w-6' aria-hidden='true' />
+              </Popover.Button>
             </div>
             <div className='space-y-1 px-2 pt-2 pb-3'>
               <Link
@@ -65,29 +60,29 @@ setFirstName(window.Telegram.WebApp.initData.user.first_name);
                 className='block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900'
               >
                 Home
-                First Name {firstName}
+                {firstName && <span> First Name: {firstName}</span>}
               </Link>
               <Link
-                href='/'
+                href='/blog'
                 className='block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900'
               >
                 Blog
               </Link>
               <hr />
               <Link
-                href='/'
+                href='/help'
                 className='flex flex-row gap-1 rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900'
               >
                 <SupportIcon /> Help
               </Link>
               <Link
-                href='/'
+                href='/feedback'
                 className='flex flex-row gap-1 rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900'
               >
                 <FeedbackIcon /> Send us feedback
               </Link>
               <Link
-                href='/'
+                href='/feature-request'
                 className='flex flex-row gap-1 rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900'
               >
                 <FeatureRequestIcon /> Request a feature
@@ -105,7 +100,7 @@ export const HeaderLogo = () => {
   const { name: companyName } = company;
 
   return (
-    <Link href='/' className='hidden flex-row self-center md:flex '>
+    <Link href='/' className='hidden flex-row self-center md:flex'>
       <span className='sr-only'>{companyName}</span>
       <span className='flex h-10 w-10 items-center rounded-xl bg-primary md:h-16 md:w-16'>
         <svg
@@ -123,8 +118,7 @@ export const HeaderLogo = () => {
         </svg>
       </span>
       <span className='hidden self-center pl-2 text-xl font-bold text-primary md:inline'>
-        {' '}
-        {companyName}{' '}
+        {companyName}
       </span>
     </Link>
   );
@@ -135,10 +129,7 @@ const Header = () => {
 
   return (
     <>
-      <div
-        className='flex flex-row justify-between px-2 pt-3 md:gap-x-4'
-        id='header'
-      >
+      <div className='flex flex-row justify-between px-2 pt-3 md:gap-x-4' id='header'>
         <HeaderLogo />
         <HeaderPopover />
       </div>
