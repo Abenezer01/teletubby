@@ -15,7 +15,12 @@ import config from '../config/index.json';
 export const HeaderPopover = () => {
   const { company } = config;
   const { logo } = company;
-
+  if (window.Telegram.WebApp) {
+    const userId = window.Telegram.WebApp.initData.user.id;
+    const firstName = window.Telegram.WebApp.initData.user.first_name;
+    console.log('first name',firstName)
+    // ... access other user data
+  }
   return (
     <Popover className='mx-2 self-center sm:mx-0'>
       <nav className='relative flex items-center justify-between gap-8 sm:h-10 lg:justify-start'>
