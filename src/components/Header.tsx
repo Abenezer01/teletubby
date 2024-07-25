@@ -12,10 +12,11 @@ import config from '../config/index.json';
 export const HeaderPopover = () => {
   const { company } = config;
   const { logo } = company;
+  const [firstName, setFirstName] = useState("");
   if (typeof window !== 'undefined' && window.Telegram) {
     const userId = window
 .Telegram.WebApp.initData.user.id;
-    const firstName = window.Telegram.WebApp.initData.user.first_name;
+setFirstName(window.Telegram.WebApp.initData.user.first_name);
     console.log('first name', firstName);
     // ... access other user data
   }
@@ -64,7 +65,7 @@ export const HeaderPopover = () => {
                 className='block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900'
               >
                 Home
-                First Name{firstName}
+                First Name {firstName}
               </Link>
               <Link
                 href='/'
