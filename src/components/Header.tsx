@@ -15,7 +15,7 @@ const Header = () => {
       setFirstName(user.first_name);
     }
   }, []);
-
+  console.log("first name",firstName)
   return (
     <>
       <div className='flex justify-between px-2 pt-3 md:gap-x-4' id='header'>
