@@ -8,6 +8,7 @@ const Header = () => {
   const { company } = config;
   const { logo, name: companyName } = company;
   const [firstName, setFirstName] = useState('');
+  const BASE_URL = 'https://api.telegram.org/bot';
   const url = `${BASE_URL}${process.env.TELEGRAM_BOT_TOKEN}`;
   console.log('full url',url)
   useEffect(() => {
