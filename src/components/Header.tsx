@@ -7,18 +7,16 @@ import React, { Fragment, useState } from 'react';
 import { FaRegGem as FeatureRequestIcon } from 'react-icons/fa';
 import { MdOutlineContactSupport as SupportIcon } from 'react-icons/md';
 import { MdOutlineFeedback as FeedbackIcon } from 'react-icons/md';
-
 import ErrorMessage from '@/components/ErrorMessage';
-
 import config from '../config/index.json';
-
 export const HeaderPopover = () => {
   const { company } = config;
   const { logo } = company;
-  if (window.Telegram.WebApp) {
-    const userId = window.Telegram.WebApp.initData.user.id;
+  if (typeof window !== 'undefined' && window.Telegram) {
+    const userId = window
+.Telegram.WebApp.initData.user.id;
     const firstName = window.Telegram.WebApp.initData.user.first_name;
-    console.log('first name',firstName)
+    console.log('first name', firstName);
     // ... access other user data
   }
   return (
@@ -66,6 +64,7 @@ export const HeaderPopover = () => {
                 className='block rounded-md px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900'
               >
                 Home
+                First Name{firstName}
               </Link>
               <Link
                 href='/'
