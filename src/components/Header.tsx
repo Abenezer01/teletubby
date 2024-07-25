@@ -8,16 +8,13 @@ const Header = () => {
   const { company } = config;
   const { logo, name: companyName } = company;
   const [firstName, setFirstName] = useState('');
-  const BASE_URL = 'https://api.telegram.org/bot';
-  const url = `${BASE_URL}${process.env.TELEGRAM_BOT_TOKEN}`;
-  console.log('full url',url)
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Telegram) {
       const { user } = window.Telegram.WebApp.initData;
       setFirstName(user.first_name);
     }
   }, []);
-  console.log("first name",firstName)
+  console.log("first name", firstName)
   return (
     <>
       <div className='flex justify-between px-2 pt-3 md:gap-x-4' id='header'>
