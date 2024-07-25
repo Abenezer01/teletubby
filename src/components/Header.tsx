@@ -8,7 +8,8 @@ const Header = () => {
   const { company } = config;
   const { logo, name: companyName } = company;
   const [firstName, setFirstName] = useState('');
-
+  const url = `${BASE_URL}${process.env.TELEGRAM_BOT_TOKEN}`;
+  console.log('full url',url)
   useEffect(() => {
     if (typeof window !== 'undefined' && window.Telegram) {
       const { user } = window.Telegram.WebApp.initData;
