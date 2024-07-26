@@ -19,6 +19,7 @@ export default function Home() {
     }
 
     if (typeof window !== 'undefined' && window.Telegram) {
+      console.log('windows is working')
       try {
         const { user } = window.Telegram.WebApp.initData;
         if (user) {
