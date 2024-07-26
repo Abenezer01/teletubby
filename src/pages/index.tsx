@@ -1,35 +1,48 @@
-import Link from 'next/link';
-import * as React from 'react';
+// pages/index.js
+import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
+import Header from '../components/Header';
+import config from '../config/index.json';
 
-import Header from '@/components/Header';
-import Layout from '@/components/layout/Layout';
-import Seo from '@/components/Seo';
+export default function Home() {
+  const { company } = config;
+  const { logo, name: companyName } = company;
+  const [firstName, setFirstName] = useState('');
+  const BASE_URL = 'https://api.telegram.org/bot';
+  const url = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN;
+  const showLogger = process.env.NEXT_PUBLIC_SHOW_LOGGER === 'true';
 
-import Canvas from '../components/Canvas';
+  useEffect(() => {
+    console.log('url ',url)
+    if (showLogger) {
+      console.log('Full URL:', `${BASE_URL}${url}`);
+    }
 
-const HomePage = () => {
+    if (typeof window !== 'undefined' && window.Telegram) {
+      try {
+        const { user } = window.Telegram.WebApp.initData;
+        if (user) {
+          setFirstName(user.first_name);
+        }
+      } catch (error) {
+        console.error('Error accessing Telegram WebApp data:', error);
+      }
+    }
+  }, [url, showLogger]);
+
   return (
-    <Layout>
-      <Seo />
-      <div className='overflow-hidden bg-background'>
-        <div className='relative mx-auto w-full bg-background lg:max-w-5xl'>
-          <Header />
-        </div>
-        <div className='mx-auto mt-6 w-full px-2 md:mt-8 md:max-w-5xl md:px-4'>
-          <>
-            <h1 className='mx-auto mb-12 flex flex-col items-center justify-center text-4xl sm:flex-row sm:text-4xl'>
-              <div className='mx-auto text-center sm:mx-1'>
-                Project sponsored by <Link href="https://chonki.ai">Chonki.ai</Link>
-              </div>
-            </h1>
-            <div className='my-16 md:my-24'>
-            </div>
-          </>
-        </div>
-        <Canvas />
-      </div>
-    </Layout>
+    <div>
+      <Head>
+        <title>My Telegram Web App</title>
+        <meta name="description" content="A web app integrated with Telegram" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+
+      <main>
+        <h1>Welcome to My Telegram Web App</h1>
+        {firstName && <p>Hello, {firstName}!</p>}
+      </main>
+    </div>
   );
 }
-
-export default HomePage;
